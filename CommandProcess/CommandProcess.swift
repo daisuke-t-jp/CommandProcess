@@ -15,7 +15,7 @@ public class CommandProcess {
   public struct Result {
     var outputMessage: String
     var errorMessage: String
-  
+    
     var hasError: Bool {
       if errorMessage.count > 0 {
         return true
@@ -37,16 +37,16 @@ public extension CommandProcess {
     let process = Process.init()
     let outputPipe = Pipe.init()
     let errorPipe = Pipe.init()
-  
+    
     process.launchPath = path
     process.arguments = args
     process.standardOutput = outputPipe
     process.standardError = errorPipe
-  
-  
+    
+    
     process.launch()
     process.waitUntilExit()
-  
+    
     let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
     var outputMessage = ""
     if(outputData.count > 0) {
@@ -58,7 +58,7 @@ public extension CommandProcess {
     if(errorData.count > 0) {
       errorMessage = String(data: errorData, encoding: .utf8) ?? ""
     }
-  
+    
     let res = Result(outputMessage: outputMessage, errorMessage: errorMessage)
     
     return res
